@@ -2,6 +2,11 @@ package Projeto;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 import javax.swing.event.*;
 import javax.swing.*;
 
@@ -10,7 +15,7 @@ public class Principal extends JFrame implements ActionListener{
 	ImageIcon imagem;
 	JMenuBar menu;
 	JMenu cadastro, alteracao, exclusao, encerrar;
-	JMenuItem professor, professores, aluno, alunos, pRGF, pRA, sair;
+	JMenuItem professor, prof, aluno, alu, pRGF, pRA, sair;
 
 	public static void main(String[] args) {
 		new Principal();
@@ -42,10 +47,12 @@ public class Principal extends JFrame implements ActionListener{
 		cadastro.add(aluno);
 
 		//Criando os itens de Alteracao;
-		professores = new JMenuItem("Professores");
-		alteracao.add(professores);
-		alunos = new JMenuItem("Alunos");
-		alteracao.add(alunos);
+		prof = new JMenuItem("Professores");
+		prof.addActionListener(this);
+		alu = new JMenuItem("Alunos");
+		alu.addActionListener(this);
+		alteracao.add(prof);
+		alteracao.add(alu);
 
 		//Criando os itens de Exclusao;
 		pRGF = new JMenuItem("Por RGF");
@@ -69,12 +76,31 @@ public class Principal extends JFrame implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == professor) {
-			new Cadastro_Prof();
-		}else if(e.getSource() == aluno) {
+		if(e.getSource() == aluno) {
 			new Cadastro_Aluno();
-		}else if(e.getSource() == professores) {
-			
+		}else if(e.getSource() == professor) {
+			new Cadastro_Prof();
+		}else if (e.getSource() == prof) {
+			int a  = Integer.parseInt(JOptionPane.showInputDialog("Digite o RGF do professor para alterar: "));
+			if(verificarRGF(a)) {
+				new Alterar_Prof();				
+			}else {
+				JOptionPane.showConfirmDialog(null, "RGF não encontrado, digite um válido.");
+			}
 		}
+	}
+	
+	public boolean verificarRGF(int a) {
+		try {
+			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root","");
+			PreparedStatement pstm = cn.prepareStatement("select * from professores where idProfessor = "+a+";");
+			System.out.println("\nRGF encontrado com sucesso!\n\n");
+			return true;
+		}catch (SQLException e) {
+			System.out.println("Falha ao encontrar RGF.");
+			e.printStackTrace();
+			return false;
+		}
+		
 	}
 }

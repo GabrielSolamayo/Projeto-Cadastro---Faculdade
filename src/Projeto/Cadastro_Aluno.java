@@ -9,25 +9,25 @@ import java.sql.SQLException;
 import javax.swing.event.*;
 import javax.swing.*;
 
-public class Cadastro_Prof extends JFrame implements ActionListener{
+public class Cadastro_Aluno extends JFrame implements ActionListener{
 
 	JButton btnGravar;
-	JLabel nome, rg, rgf;
-	JTextField txtNome, txtRG, txtRGF;
+	JLabel nome, ra, rg;
+	JTextField txtNome, txtRA, txtRG;
 
-	public Cadastro_Prof() {
-		setTitle("Cadastro de Professor");
+	public Cadastro_Aluno() {
+		setTitle("Cadastro de Aluno");
 		setSize(450 , 350);
 		getContentPane().setLayout(null);
 
 		nome = criarRotulo("Nome: ", 10, 10, 100, 35);
 		txtNome = criarTexto(110, 10, 300, 35);
 
-		rg = criarRotulo("RG: ", 10, 60, 100, 35);
-		txtRG = criarTexto(110, 60, 300, 35);
+		ra = criarRotulo("RA: ", 10, 60, 100, 35);
+		txtRA = criarTexto(110, 60, 300, 35);
 
-		rgf = criarRotulo("RGF", 10, 110, 100, 35);
-		txtRGF = criarTexto(110, 110, 300, 35);
+		rg = criarRotulo("RG", 10, 110, 100, 35);
+		txtRG = criarTexto(110, 110, 300, 35);
 
 		//Criando Botões;
 		btnGravar = criarBotao("Gravar", 155, 180, 130, 30, 'G');
@@ -45,26 +45,27 @@ public class Cadastro_Prof extends JFrame implements ActionListener{
 		if(e.getSource() == btnGravar){
 			int resp=JOptionPane.showConfirmDialog(null, "Confirma a gravação?");
 			if(resp == 0) {
-				Professor novo = new Professor(txtNome.getText(), txtRG.getText(), txtRGF.getText());
+				Aluno novo = new Aluno(txtNome.getText(), txtRA.getText(), txtRG.getText());
 				gravarDados(novo);
 				limparCampos();
 			}
 		}
+
 	}
 
 
 
 	//Gravando os dados no BD "projeto_integrador";
-	public void gravarDados(Professor novo) {
+	public void gravarDados(Aluno novo) {
 		try {
 			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root", "");
 
-			PreparedStatement ps = cn.prepareStatement("INSERT INTO professores(nome, rg, rgf) VALUES (?, ?, ?)");
+			PreparedStatement ps = cn.prepareStatement("INSERT INTO alunos(nome, rg, ra) VALUES (?, ?, ?)");
 			ps.setString(1, novo.getNome());
 			ps.setString(2, novo.getRg());
-			ps.setString(3, novo.getRgf());
+			ps.setString(3, novo.getRa());
 			ps.executeUpdate();
-			JOptionPane.showMessageDialog(null, "Professor cadastrado com sucesso.");
+			JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso.");
 			ps.close();
 			cn.close();
 			System.out.println("Conexão encerrada.");            
@@ -107,9 +108,9 @@ public class Cadastro_Prof extends JFrame implements ActionListener{
 	}
 
 	//Limpando as caixas de textos;
-		private void limparCampos() {
-			txtNome.setText("");	
-			txtRG.setText("");
-			txtRGF.setText("");
-		}
+	private void limparCampos() {
+		txtNome.setText("");	
+		txtRG.setText("");
+		txtRA.setText("");
+	}
 }
