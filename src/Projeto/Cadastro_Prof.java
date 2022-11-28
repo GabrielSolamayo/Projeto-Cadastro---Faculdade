@@ -43,19 +43,42 @@ public class Cadastro_Prof extends JFrame implements ActionListener{
 			int resp=JOptionPane.showConfirmDialog(null, "Confirma a gravação?");
 			if(resp == 0) {
 				Professor novo = new Professor(txtNome.getText(), txtRG.getText());
-				gravarDados(novo);
-				limparCampos();
+				String a = novo.getRg();
+				if(validarRG(a)) {
+					gravarDados(novo);
+					limparCampos();
+				}else {
+					limparCampos();
+				}
 			}
 		}
 	}
 
-
+	public boolean validarRG(String A) {
+		int a = A.charAt(0) - '0';
+		int b = A.charAt(1) - '0';
+		int c = A.charAt(2) - '0';
+		int d = A.charAt(3) - '0';
+		int e = A.charAt(4) - '0';
+		int f = A.charAt(5) - '0';
+		int g = A.charAt(6) - '0';
+		int h = A.charAt(7) - '0';
+		int i = A.charAt(8) - '0';
+		int result = (2*a) + (3*b) + (4*c) + (5*d) + (6*e) + (7*f) + (8*g) + (9*h) ;
+		int abc = 11 -(result % 11);
+		if(abc == i) {
+			return true;
+		}else {
+			JOptionPane.showMessageDialog(null, "RG não válido");
+			return false;
+		}
+		
+	}
 
 	//Gravando os dados no BD "projeto_integrador";
 	public void gravarDados(Professor novo) {
 		try {
 			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root", "");
-
 			PreparedStatement ps = cn.prepareStatement("INSERT INTO professores(nome_prof, rg_prof) VALUES (?, ?)");
 			ps.setString(1, novo.getNome());
 			ps.setString(2, novo.getRg());
