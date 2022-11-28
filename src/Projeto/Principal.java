@@ -64,6 +64,7 @@ public class Principal extends JFrame implements ActionListener{
 
 		//Criando os itens de Encerrar;
 		sair = new JMenuItem("Sair");
+		sair.addActionListener(this);
 		encerrar.add(sair);
 
 		imagem = new ImageIcon(getClass().getResource("Pinguim.jpg"));
@@ -90,6 +91,10 @@ public class Principal extends JFrame implements ActionListener{
 			new Excluir_RGF();
 		}else if (e.getSource() == pRA) {
 			new Excluir_RA();
+		}else if (e.getSource() == sair) {
+			int resp = JOptionPane.showConfirmDialog(null,"Confirma o encerramento?");
+			if(resp==0)
+				System.exit(0);
 		}
 	}
 	
