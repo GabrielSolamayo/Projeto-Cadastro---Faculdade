@@ -1,0 +1,13 @@
+create database projeto_integrador;
+ 
+create table professores (
+    rgf int not null primary key,
+    nome_prof varchar(50) not null,
+    rg_prof int(50) null
+);
+
+create table alunos (
+    ra int not null primary key,
+    nome_aluno varchar(50) not null,
+    rg_aluno int(50) null
+);
