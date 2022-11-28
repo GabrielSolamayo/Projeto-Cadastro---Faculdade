@@ -81,26 +81,10 @@ public class Principal extends JFrame implements ActionListener{
 		}else if(e.getSource() == professor) {
 			new Cadastro_Prof();
 		}else if (e.getSource() == prof) {
-			int a  = Integer.parseInt(JOptionPane.showInputDialog("Digite o RGF do professor para alterar: "));
-			if(verificarRGF(a)) {
 				new Alterar_Prof();				
-			}else {
-				JOptionPane.showConfirmDialog(null, "RGF não encontrado, digite um válido.");
-			}
+		}else if (e.getSource() == alu) {
+			new Alterar_Aluno();
 		}
 	}
 	
-	public boolean verificarRGF(int a) {
-		try {
-			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root","");
-			PreparedStatement pstm = cn.prepareStatement("select * from professores where idProfessor = "+a+";");
-			System.out.println("\nRGF encontrado com sucesso!\n\n");
-			return true;
-		}catch (SQLException e) {
-			System.out.println("Falha ao encontrar RGF.");
-			e.printStackTrace();
-			return false;
-		}
-		
-	}
 }
