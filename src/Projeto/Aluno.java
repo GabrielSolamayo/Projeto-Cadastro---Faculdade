@@ -15,6 +15,9 @@ public class Aluno {
 		this.rg = rg;
 	}
 
+	public Aluno(String ra) {
+		this.ra = ra;
+	}
 	
 	public String getNome() {
 		return nome;

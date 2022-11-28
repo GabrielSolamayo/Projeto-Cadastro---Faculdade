@@ -17,7 +17,7 @@ public class Excluir_RGF extends JFrame implements ActionListener{
 	
 	public Excluir_RGF() {
 		setTitle("Excluir Professor");
-		setSize(500 , 350);
+		setSize(450 , 230);
 		getContentPane().setLayout(null);
 
 		texto = criarRotulo("Digite o RGF do professor para excluir.", 10, 5, 500, 35);
@@ -26,7 +26,7 @@ public class Excluir_RGF extends JFrame implements ActionListener{
 		txtRGF = criarTexto(110, 50, 300, 35);
 
 		//Criando Botões;
-		btnExcluir = criarBotao("Excluir", 155, 230, 130, 30, 'E');
+		btnExcluir = criarBotao("Excluir", 155, 130, 130, 30, 'E');
 		btnExcluir.addActionListener(this);
 
 		setLocationRelativeTo(null);

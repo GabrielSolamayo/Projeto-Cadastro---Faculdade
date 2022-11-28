@@ -56,7 +56,9 @@ public class Principal extends JFrame implements ActionListener{
 
 		//Criando os itens de Exclusao;
 		pRGF = new JMenuItem("Por RGF");
+		pRGF.addActionListener(this);
 		pRA = new JMenuItem("Por RA");
+		pRA.addActionListener(this);
 		exclusao.add(pRGF);
 		exclusao.add(pRA);
 

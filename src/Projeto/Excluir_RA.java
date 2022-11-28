@@ -14,7 +14,7 @@ public class Excluir_RA extends JFrame implements ActionListener{
 	JButton btnExcluir;
 	JLabel  ra, texto;
 	JTextField  txtRA;
-	
+
 	public Excluir_RA() {
 		setTitle("Excluir Aluno");
 		setSize(500 , 350);
@@ -33,73 +33,78 @@ public class Excluir_RA extends JFrame implements ActionListener{
 		setVisible(true);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 	}
-	
+
 	//Evento dos botoes;
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if(e.getSource() == btnExcluir){
-					int resp=JOptionPane.showConfirmDialog(null, "Confirma a exclusão?");
-					if(resp == 0) {
-						Professor novo = new Professor(txtRA.getText());
-						excluirDados(novo);
-						limparCampos();
-					}
-				}
-			}
-
-
-			//Gravando os dados no BD "projeto_integrador";
-			public void excluirDados(Professor novo) {
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == btnExcluir){
+			int resp=JOptionPane.showConfirmDialog(null, "Confirma a exclusão?");
+			if(resp == 0) {
+				Aluno novo = new Aluno(txtRA.getText());
 				try {
-					Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root", "");
-
-					PreparedStatement ps = cn.prepareStatement("DELETE FROM professores WHERE rgf = ?");
-					ps.setString(1, novo.getRgf());
-					ps.executeUpdate();
-					JOptionPane.showMessageDialog(null, "Professor excluido com sucesso.");
-					ps.close();
-					cn.close();
-					System.out.println("Conexão encerrada.");            
-				} catch (SQLException e) {
-					System.out.println("Falha ao tentar excluir o Professor.");
-					JOptionPane.showMessageDialog(null, "Falha ao tentar excluir Professor - RGR não encontrado.");
-					e.printStackTrace();
+					excluirDados(novo);
+				} catch (Exception e1) {
+					e1.printStackTrace();
 				}
+				limparCampos();
 			}
-			//Metodo para cirar Rotulos;
-			private JLabel criarRotulo(String texto, int x, int y, int w, int h) {
-				JLabel l1 = new JLabel(texto);
-				l1.setBounds(x, y, w, h);
-				l1.setFont(new Font("Helvetica", Font.BOLD, 20));
-				add(l1);
-				return l1;
-			}
+		}
+	}
 
-			//Metodo para criar Textos;
-			private JTextField criarTexto(int x, int y, int w, int h) {
-				JTextField t1 = new JTextField();
-				t1.setBounds(x, y, w, h);
-				t1.setFont(new Font("Helvetica", Font.BOLD, 18));        
-				//t1.addActionListener(this);
-				t1.setHorizontalAlignment(SwingConstants.LEFT);
-				add(t1);
-				return t1;
-			}
 
-			//Metodo para criar botao;
-			private JButton criarBotao(String texto, int x, int y, int w, int h, char c) {
-				JButton b1 = new JButton(texto);
-				b1.setBounds(x, y, w, h);
-				b1.setFont(new Font("Helvetica", Font.BOLD, 18));
-				b1.setHorizontalAlignment(SwingConstants.CENTER);
-				b1.setVerticalAlignment(SwingConstants.CENTER);
-				b1.setMnemonic(c); 
-				add(b1);
-				return b1;
-			}
+	//Gravando os dados no BD "projeto_integrador";
+	private void excluirDados(Aluno novo) throws Exception{
+		Connection cn = null;
+		PreparedStatement pstm = null;
+		try {
+			cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root","");
+			pstm = cn.prepareStatement("DELETE FROM alunos WHERE ra = ?");
+			pstm.setString(1, novo.getRa());
+			JOptionPane.showMessageDialog(null, "Aluno excluido com sucesso.");
+			pstm.execute();
+		}catch(SQLException e) {
+			cn.rollback();
+			JOptionPane.showInputDialog("Falha ao acessar");
+			throw new Exception("Falha ao acessar a base de dados.", e);
+		} finally {
+			pstm.close();
+			cn.close();
+		}
+	}
+	//Metodo para cirar Rotulos;
+	private JLabel criarRotulo(String texto, int x, int y, int w, int h) {
+		JLabel l1 = new JLabel(texto);
+		l1.setBounds(x, y, w, h);
+		l1.setFont(new Font("Helvetica", Font.BOLD, 20));
+		add(l1);
+		return l1;
+	}
 
-			//Limpando as caixas de textos;
-			private void limparCampos() {
-				txtRA.setText("");
-			}
+	//Metodo para criar Textos;
+	private JTextField criarTexto(int x, int y, int w, int h) {
+		JTextField t1 = new JTextField();
+		t1.setBounds(x, y, w, h);
+		t1.setFont(new Font("Helvetica", Font.BOLD, 18));        
+		//t1.addActionListener(this);
+		t1.setHorizontalAlignment(SwingConstants.LEFT);
+		add(t1);
+		return t1;
+	}
+
+	//Metodo para criar botao;
+	private JButton criarBotao(String texto, int x, int y, int w, int h, char c) {
+		JButton b1 = new JButton(texto);
+		b1.setBounds(x, y, w, h);
+		b1.setFont(new Font("Helvetica", Font.BOLD, 18));
+		b1.setHorizontalAlignment(SwingConstants.CENTER);
+		b1.setVerticalAlignment(SwingConstants.CENTER);
+		b1.setMnemonic(c); 
+		add(b1);
+		return b1;
+	}
+
+	//Limpando as caixas de textos;
+	private void limparCampos() {
+		txtRA.setText("");
+	}
 }
