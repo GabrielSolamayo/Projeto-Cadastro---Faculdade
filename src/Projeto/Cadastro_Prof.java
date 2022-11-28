@@ -17,20 +17,17 @@ public class Cadastro_Prof extends JFrame implements ActionListener{
 
 	public Cadastro_Prof() {
 		setTitle("Cadastro de Professor");
-		setSize(450 , 350);
+		setSize(450 , 250);
 		getContentPane().setLayout(null);
 
 		nome = criarRotulo("Nome: ", 10, 10, 100, 35);
-		txtNome = criarTexto(110, 10, 300, 35);
+		txtNome = criarTexto(90, 10, 300, 35);
 
 		rg = criarRotulo("RG: ", 10, 60, 100, 35);
-		txtRG = criarTexto(110, 60, 300, 35);
-
-		rgf = criarRotulo("RGF", 10, 110, 100, 35);
-		txtRGF = criarTexto(110, 110, 300, 35);
+		txtRG = criarTexto(90, 60, 300, 35);
 
 		//Criando Botões;
-		btnGravar = criarBotao("Gravar", 155, 180, 130, 30, 'G');
+		btnGravar = criarBotao("Gravar", 155, 130, 130, 30, 'G');
 		btnGravar.addActionListener(this);
 
 		setLocationRelativeTo(null);
@@ -45,7 +42,7 @@ public class Cadastro_Prof extends JFrame implements ActionListener{
 		if(e.getSource() == btnGravar){
 			int resp=JOptionPane.showConfirmDialog(null, "Confirma a gravação?");
 			if(resp == 0) {
-				Professor novo = new Professor(txtNome.getText(), txtRG.getText(), txtRGF.getText());
+				Professor novo = new Professor(txtNome.getText(), txtRG.getText());
 				gravarDados(novo);
 				limparCampos();
 			}
@@ -59,10 +56,9 @@ public class Cadastro_Prof extends JFrame implements ActionListener{
 		try {
 			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root", "");
 
-			PreparedStatement ps = cn.prepareStatement("INSERT INTO professores(nome, rg, rgf) VALUES (?, ?, ?)");
+			PreparedStatement ps = cn.prepareStatement("INSERT INTO professores(nome_prof, rg_prof) VALUES (?, ?)");
 			ps.setString(1, novo.getNome());
 			ps.setString(2, novo.getRg());
-			ps.setString(3, novo.getRgf());
 			ps.executeUpdate();
 			JOptionPane.showMessageDialog(null, "Professor cadastrado com sucesso.");
 			ps.close();
@@ -70,7 +66,7 @@ public class Cadastro_Prof extends JFrame implements ActionListener{
 			System.out.println("Conexão encerrada.");            
 		} catch (SQLException e) {
 			System.out.println(
-					"Falha ao tentar gravar o Aluno.");
+					"Falha ao tentar gravar o Professor.");
 			e.printStackTrace();
 		}
 	}
@@ -110,6 +106,5 @@ public class Cadastro_Prof extends JFrame implements ActionListener{
 		private void limparCampos() {
 			txtNome.setText("");	
 			txtRG.setText("");
-			txtRGF.setText("");
 		}
 }

@@ -12,25 +12,22 @@ import javax.swing.*;
 public class Cadastro_Aluno extends JFrame implements ActionListener{
 
 	JButton btnGravar;
-	JLabel nome, ra, rg;
-	JTextField txtNome, txtRA, txtRG;
+	JLabel nome, rg;
+	JTextField txtNome, txtRG;
 
 	public Cadastro_Aluno() {
 		setTitle("Cadastro de Aluno");
-		setSize(450 , 350);
+		setSize(450 , 250);
 		getContentPane().setLayout(null);
 
 		nome = criarRotulo("Nome: ", 10, 10, 100, 35);
-		txtNome = criarTexto(110, 10, 300, 35);
+		txtNome = criarTexto(90, 10, 300, 35);
 
-		ra = criarRotulo("RA: ", 10, 60, 100, 35);
-		txtRA = criarTexto(110, 60, 300, 35);
-
-		rg = criarRotulo("RG", 10, 110, 100, 35);
-		txtRG = criarTexto(110, 110, 300, 35);
+		rg = criarRotulo("RG", 10, 60, 100, 35);
+		txtRG = criarTexto(90, 60, 300, 35);
 
 		//Criando Botões;
-		btnGravar = criarBotao("Gravar", 155, 180, 130, 30, 'G');
+		btnGravar = criarBotao("Gravar", 155, 130, 130, 30, 'G');
 		btnGravar.addActionListener(this);
 
 		setLocationRelativeTo(null);
@@ -45,7 +42,7 @@ public class Cadastro_Aluno extends JFrame implements ActionListener{
 		if(e.getSource() == btnGravar){
 			int resp=JOptionPane.showConfirmDialog(null, "Confirma a gravação?");
 			if(resp == 0) {
-				Aluno novo = new Aluno(txtNome.getText(), txtRA.getText(), txtRG.getText());
+				Aluno novo = new Aluno(txtNome.getText(), txtRG.getText());
 				gravarDados(novo);
 				limparCampos();
 			}
@@ -54,24 +51,21 @@ public class Cadastro_Aluno extends JFrame implements ActionListener{
 	}
 
 
-
 	//Gravando os dados no BD "projeto_integrador";
 	public void gravarDados(Aluno novo) {
 		try {
 			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root", "");
 
-			PreparedStatement ps = cn.prepareStatement("INSERT INTO alunos(nome, rg, ra) VALUES (?, ?, ?)");
+			PreparedStatement ps = cn.prepareStatement("INSERT INTO alunos(nome_aluno, rg_aluno) VALUES (?, ?)");
 			ps.setString(1, novo.getNome());
 			ps.setString(2, novo.getRg());
-			ps.setString(3, novo.getRa());
 			ps.executeUpdate();
 			JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso.");
 			ps.close();
 			cn.close();
 			System.out.println("Conexão encerrada.");            
 		} catch (SQLException e) {
-			System.out.println(
-					"Falha ao tentar gravar o Aluno.");
+			System.out.println("Falha ao tentar gravar o Aluno.");
 			e.printStackTrace();
 		}
 	}
@@ -111,6 +105,5 @@ public class Cadastro_Aluno extends JFrame implements ActionListener{
 	private void limparCampos() {
 		txtNome.setText("");	
 		txtRG.setText("");
-		txtRA.setText("");
 	}
 }

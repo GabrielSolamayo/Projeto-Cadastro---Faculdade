@@ -9,6 +9,11 @@ public class Aluno {
 		this.ra = ra;
 		this.rg = rg;
 	}
+	
+	public Aluno(String nome, String rg) {
+		this.nome = nome;
+		this.rg = rg;
+	}
 
 	
 	public String getNome() {
