@@ -40,7 +40,7 @@ public class Cadastro_Aluno extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnGravar){
-			int resp=JOptionPane.showConfirmDialog(null, "Confirma a gravação?");
+			int resp=JOptionPane.showConfirmDialog(null, "Confirma a gravacao?");
 			if(resp == 0) {
 				Aluno novo = new Aluno(txtNome.getText(), txtRG.getText());
 				String a = novo.getRg();
@@ -70,7 +70,7 @@ public class Cadastro_Aluno extends JFrame implements ActionListener{
 		if(abc == i) {
 			return true;
 		}else {
-			JOptionPane.showMessageDialog(null, "RG não válido");
+			JOptionPane.showMessageDialog(null, "RG não valido");
 			return false;
 		}
 		
@@ -87,7 +87,7 @@ public class Cadastro_Aluno extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(null, "Aluno cadastrado com sucesso.");
 			ps.close();
 			cn.close();
-			System.out.println("Conexão encerrada.");            
+			System.out.println("Conexao encerrada.");            
 		} catch (SQLException e) {
 			System.out.println("Falha ao tentar gravar o Aluno.");
 			e.printStackTrace();

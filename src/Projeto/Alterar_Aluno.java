@@ -44,7 +44,7 @@ public class Alterar_Aluno extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnAlterar){
-			int resp=JOptionPane.showConfirmDialog(null, "Confirma a alteração?");
+			int resp=JOptionPane.showConfirmDialog(null, "Confirma a alteracao?");
 			if(resp == 0) {
 				Aluno novo = new Aluno(txtNome.getText(), txtRA.getText(), txtRG.getText());
 				alterarDados(novo);
@@ -67,10 +67,10 @@ public class Alterar_Aluno extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(null, "Aluno alterado com sucesso.");
 			ps.close();
 			cn.close();
-			System.out.println("Conexão encerrada.");            
+			System.out.println("Conexao encerrada.");            
 		} catch (SQLException e) {
 			System.out.println("Falha ao tentar alterar o Professor.");
-			JOptionPane.showMessageDialog(null, "Falha ao tentar alterar Professor - RGR não encontrado.");
+			JOptionPane.showMessageDialog(null, "Falha ao tentar alterar Professor - RGR nao encontrado.");
 			e.printStackTrace();
 		}
 	}

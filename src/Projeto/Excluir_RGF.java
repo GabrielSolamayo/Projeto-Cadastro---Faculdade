@@ -38,7 +38,7 @@ public class Excluir_RGF extends JFrame implements ActionListener{
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource() == btnExcluir){
-				int resp=JOptionPane.showConfirmDialog(null, "Confirma a exclusão?");
+				int resp=JOptionPane.showConfirmDialog(null, "Confirma a exclusao?");
 				if(resp == 0) {
 					Professor novo = new Professor(txtRGF.getText());
 					excluirDados(novo);
@@ -59,10 +59,10 @@ public class Excluir_RGF extends JFrame implements ActionListener{
 				JOptionPane.showMessageDialog(null, "Professor excluido com sucesso.");
 				ps.close();
 				cn.close();
-				System.out.println("Conexão encerrada.");            
+				System.out.println("Conexao encerrada.");            
 			} catch (SQLException e) {
 				System.out.println("Falha ao tentar excluir o Professor.");
-				JOptionPane.showMessageDialog(null, "Falha ao tentar excluir Professor - RGR não encontrado.");
+				JOptionPane.showMessageDialog(null, "Falha ao tentar excluir Professor - RGR nao encontrado.");
 				e.printStackTrace();
 			}
 		}

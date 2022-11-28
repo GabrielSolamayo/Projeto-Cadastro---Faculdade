@@ -16,7 +16,6 @@ public class Alterar_Prof extends JFrame implements ActionListener{
 	JTextField txtNome, txtRG, txtRGF;
 
 	public Alterar_Prof() {
-		JOptionPane.showConfirmDialog(null, "ALO");
 		setTitle("Alterar Professor");
 		setSize(500 , 350);
 		getContentPane().setLayout(null);
@@ -45,7 +44,7 @@ public class Alterar_Prof extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnAlterar){
-			int resp=JOptionPane.showConfirmDialog(null, "Confirma a alteração?");
+			int resp=JOptionPane.showConfirmDialog(null, "Confirma a alteracao?");
 			if(resp == 0) {
 				Professor novo = new Professor(txtNome.getText(), txtRG.getText(), txtRGF.getText());
 				alterarDados(novo);
@@ -68,10 +67,10 @@ public class Alterar_Prof extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(null, "Professor alterado com sucesso.");
 			ps.close();
 			cn.close();
-			System.out.println("Conexão encerrada.");            
+			System.out.println("Conexao encerrada.");            
 		} catch (SQLException e) {
 			System.out.println("Falha ao tentar alterar o Professor.");
-			JOptionPane.showMessageDialog(null, "Falha ao tentar alterar Professor - RGR não encontrado.");
+			JOptionPane.showMessageDialog(null, "Falha ao tentar alterar Professor - RGR nao encontrado.");
 			e.printStackTrace();
 		}
 	}

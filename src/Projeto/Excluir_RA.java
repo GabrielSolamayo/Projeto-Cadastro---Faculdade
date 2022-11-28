@@ -38,7 +38,7 @@ public class Excluir_RA extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnExcluir){
-			int resp=JOptionPane.showConfirmDialog(null, "Confirma a exclusão?");
+			int resp=JOptionPane.showConfirmDialog(null, "Confirma a exclusao?");
 			if(resp == 0) {
 				Aluno novo = new Aluno(txtRA.getText());
 				try {

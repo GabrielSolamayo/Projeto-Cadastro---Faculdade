@@ -40,7 +40,7 @@ public class Cadastro_Prof extends JFrame implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == btnGravar){
-			int resp=JOptionPane.showConfirmDialog(null, "Confirma a gravação?");
+			int resp=JOptionPane.showConfirmDialog(null, "Confirma a gravacao?");
 			if(resp == 0) {
 				Professor novo = new Professor(txtNome.getText(), txtRG.getText());
 				String a = novo.getRg();
@@ -86,7 +86,7 @@ public class Cadastro_Prof extends JFrame implements ActionListener{
 			JOptionPane.showMessageDialog(null, "Professor cadastrado com sucesso.");
 			ps.close();
 			cn.close();
-			System.out.println("Conexão encerrada.");            
+			System.out.println("Conexao encerrada.");            
 		} catch (SQLException e) {
 			System.out.println(
 					"Falha ao tentar gravar o Professor.");
