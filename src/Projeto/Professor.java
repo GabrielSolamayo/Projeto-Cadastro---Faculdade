@@ -13,7 +13,10 @@ public class Professor {
 		this.nome = nome;
 		this.rg = rg;
 	}
-
+	public Professor(String rgf) {
+		this.rgf = rgf;
+	}
+	
 	public String getNome() {
 		return nome;
 	}

@@ -84,6 +84,10 @@ public class Principal extends JFrame implements ActionListener{
 				new Alterar_Prof();				
 		}else if (e.getSource() == alu) {
 			new Alterar_Aluno();
+		}else if (e.getSource() == pRGF) {
+			new Excluir_RGF();
+		}else if (e.getSource() == pRA) {
+			new Excluir_RA();
 		}
 	}
 	
