@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.event.*;
 import javax.swing.*;
@@ -12,32 +13,33 @@ import javax.swing.*;
 public class Alterar_Prof extends JFrame implements ActionListener{
 
 	JButton btnAlterar;
-	JLabel nome, rg, rgf, texto;
-	JTextField txtNome, txtRG, txtRGF;
+	JLabel nome, rg;
+	JTextField txtNome, txtRG;
+	private int a;
 
 	public Alterar_Prof() {
-		setTitle("Alterar Professor");
-		setSize(500 , 350);
-		getContentPane().setLayout(null);
+		a = Integer.parseInt(JOptionPane.showInputDialog("Insira o RGF do professor que deseja alterar: "));
+		if(verificarRGF(a)) {
+			setTitle("Alterar Professor");
+			setSize(500 , 220);
+			getContentPane().setLayout(null);
 
-		texto = criarRotulo("Insira o RGR do Professor que deseja alterar.", 10, 5, 500, 35);
+			nome = criarRotulo("Nome: ", 10, 10, 100, 35);
+			txtNome = criarTexto(110, 10, 300, 35);
 
-		rgf = criarRotulo("RGF: ", 10, 50, 100, 35);
-		txtRGF = criarTexto(110, 50, 300, 35);
+			rg = criarRotulo("RG: ", 10, 60, 100, 35);
+			txtRG = criarTexto(110, 60, 300, 35);
 
-		nome = criarRotulo("Nome: ", 10, 100, 100, 35);
-		txtNome = criarTexto(110, 100, 300, 35);
+			//Criando Botões;
+			btnAlterar = criarBotao("Alterar", 155, 120, 130, 30, 'A');
+			btnAlterar.addActionListener(this);
 
-		rg = criarRotulo("RG", 10, 150, 100, 35);
-		txtRG = criarTexto(110, 150, 300, 35);
-
-		//Criando Botões;
-		btnAlterar = criarBotao("Alterar", 155, 230, 130, 30, 'A');
-		btnAlterar.addActionListener(this);
-
-		setLocationRelativeTo(null);
-		setVisible(true);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			setLocationRelativeTo(null);
+			setVisible(true);
+			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		}else {
+			
+		}
 	}
 
 	//Evento dos botoes;
@@ -46,10 +48,27 @@ public class Alterar_Prof extends JFrame implements ActionListener{
 		if(e.getSource() == btnAlterar){
 			int resp=JOptionPane.showConfirmDialog(null, "Confirma a alteracao?");
 			if(resp == 0) {
-				Professor novo = new Professor(txtNome.getText(), txtRG.getText(), txtRGF.getText());
+				Professor novo = new Professor(txtNome.getText(), txtRG.getText());
 				alterarDados(novo);
 				limparCampos();
 			}
+		}
+	}
+	
+	public boolean verificarRGF(int rgf) {
+		try {
+		Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root", "");
+		PreparedStatement ps = cn.prepareStatement("Select rgf from professores where rgf = " + rgf);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()) {
+			return true;
+		}else {
+			JOptionPane.showMessageDialog(null, "RGF nao encontrado");
+			return false;
+		}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -62,7 +81,7 @@ public class Alterar_Prof extends JFrame implements ActionListener{
 			PreparedStatement ps = cn.prepareStatement("UPDATE professores SET nome_prof = ?, rg_prof = ? WHERE rgf = ?");
 			ps.setString(1, novo.getNome());
 			ps.setString(2, novo.getRg());
-			ps.setString(3, novo.getRgf());
+			ps.setInt(3, a);
 			ps.executeUpdate();
 			JOptionPane.showMessageDialog(null, "Professor alterado com sucesso.");
 			ps.close();
@@ -110,6 +129,5 @@ public class Alterar_Prof extends JFrame implements ActionListener{
 	private void limparCampos() {
 		txtNome.setText("");	
 		txtRG.setText("");
-		txtRGF.setText("");
 	}
 }

@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.event.*;
@@ -84,9 +85,9 @@ public class Principal extends JFrame implements ActionListener{
 		}else if(e.getSource() == professor) {
 			new Cadastro_Prof();
 		}else if (e.getSource() == prof) {
-				new Alterar_Prof();				
+				new Alterar_Prof();					
 		}else if (e.getSource() == alu) {
-			new Alterar_Aluno();
+				new Alterar_Aluno();	
 		}else if (e.getSource() == pRGF) {
 			new Excluir_RGF();
 		}else if (e.getSource() == pRA) {
@@ -97,5 +98,9 @@ public class Principal extends JFrame implements ActionListener{
 				System.exit(0);
 		}
 	}
+
 	
+	
+
+
 }

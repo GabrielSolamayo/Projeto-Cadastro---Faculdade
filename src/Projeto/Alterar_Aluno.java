@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.event.*;
 import javax.swing.*;
@@ -12,32 +13,49 @@ import javax.swing.*;
 public class Alterar_Aluno extends JFrame implements ActionListener{
 
 	JButton btnAlterar;
-	JLabel nome, rg, ra, texto;
+	JLabel nome, rg;
 	JTextField txtNome, txtRG, txtRA;
-
+	private int a;
 	public Alterar_Aluno() {
-		setTitle("Alterar Aluno");
-		setSize(500 , 350);
-		getContentPane().setLayout(null);
+		a = Integer.parseInt(JOptionPane.showInputDialog("Insira o RA do aluno que deseja alterar: "));
+		if(verificarRA(a)) {
+			setTitle("Alterar Aluno");
+			setSize(500 , 220);
+			getContentPane().setLayout(null);
 
-		texto = criarRotulo("Insira o RA do Aluno que deseja alterar.", 10, 5, 500, 35);
+			nome = criarRotulo("Nome: ", 10, 10, 100, 35);
+			txtNome = criarTexto(110, 10, 300, 35);
 
-		ra = criarRotulo("RGF: ", 10, 50, 100, 35);
-		txtRA = criarTexto(110, 50, 300, 35);
+			rg = criarRotulo("RG: ", 10, 60, 100, 35);
+			txtRG = criarTexto(110, 60, 300, 35);
 
-		nome = criarRotulo("Nome: ", 10, 100, 100, 35);
-		txtNome = criarTexto(110, 100, 300, 35);
+			//Criando Botões;
+			btnAlterar = criarBotao("Alterar", 155, 120, 130, 30, 'A');
+			btnAlterar.addActionListener(this);
 
-		rg = criarRotulo("RG", 10, 150, 100, 35);
-		txtRG = criarTexto(110, 150, 300, 35);
-
-		//Criando Botões;
-		btnAlterar = criarBotao("Alterar", 155, 230, 130, 30, 'A');
-		btnAlterar.addActionListener(this);
-
-		setLocationRelativeTo(null);
-		setVisible(true);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+			setLocationRelativeTo(null);
+			setVisible(true);
+			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		}else {
+			
+		}
+	}
+	
+	public boolean verificarRA(int ra) {
+		try {
+		Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root", "");
+		PreparedStatement ps = cn.prepareStatement("Select ra from alunos where ra = " + ra);
+		ResultSet rs = ps.executeQuery();
+		if(rs.next()) {
+			return true;
+		}else {
+			JOptionPane.showMessageDialog(null, "RA nao encontrado");
+			return false;
+		}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	//Evento dos botoes;
@@ -46,7 +64,7 @@ public class Alterar_Aluno extends JFrame implements ActionListener{
 		if(e.getSource() == btnAlterar){
 			int resp=JOptionPane.showConfirmDialog(null, "Confirma a alteracao?");
 			if(resp == 0) {
-				Aluno novo = new Aluno(txtNome.getText(), txtRA.getText(), txtRG.getText());
+				Aluno novo = new Aluno(txtNome.getText(), txtRG.getText());
 				alterarDados(novo);
 				limparCampos();
 			}
@@ -58,11 +76,10 @@ public class Alterar_Aluno extends JFrame implements ActionListener{
 	public void alterarDados(Aluno novo) {
 		try {
 			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root", "");
-
 			PreparedStatement ps = cn.prepareStatement("UPDATE alunos SET nome_aluno = ?, rg_aluno = ? WHERE ra = ?");
 			ps.setString(1, novo.getNome());
 			ps.setString(2, novo.getRg());
-			ps.setString(3, novo.getRa());
+			ps.setInt(3, a);
 			ps.executeUpdate();
 			JOptionPane.showMessageDialog(null, "Aluno alterado com sucesso.");
 			ps.close();
@@ -70,7 +87,6 @@ public class Alterar_Aluno extends JFrame implements ActionListener{
 			System.out.println("Conexao encerrada.");            
 		} catch (SQLException e) {
 			System.out.println("Falha ao tentar alterar o Professor.");
-			JOptionPane.showMessageDialog(null, "Falha ao tentar alterar Professor - RGR nao encontrado.");
 			e.printStackTrace();
 		}
 	}
