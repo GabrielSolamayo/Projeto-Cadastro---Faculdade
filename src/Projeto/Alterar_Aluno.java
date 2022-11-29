@@ -37,21 +37,21 @@ public class Alterar_Aluno extends JFrame implements ActionListener{
 			setVisible(true);
 			setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		}else {
-			
+
 		}
 	}
-	
+
 	public boolean verificarRA(int ra) {
 		try {
-		Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root", "");
-		PreparedStatement ps = cn.prepareStatement("Select ra from alunos where ra = " + ra);
-		ResultSet rs = ps.executeQuery();
-		if(rs.next()) {
-			return true;
-		}else {
-			JOptionPane.showMessageDialog(null, "RA nao encontrado");
-			return false;
-		}
+			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root", "");
+			PreparedStatement ps = cn.prepareStatement("Select ra from alunos where ra = " + ra);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				return true;
+			}else {
+				JOptionPane.showMessageDialog(null, "RA nao encontrado");
+				return false;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
@@ -65,10 +65,34 @@ public class Alterar_Aluno extends JFrame implements ActionListener{
 			int resp=JOptionPane.showConfirmDialog(null, "Confirma a alteracao?");
 			if(resp == 0) {
 				Aluno novo = new Aluno(txtNome.getText(), txtRG.getText());
-				alterarDados(novo);
-				limparCampos();
+				String a = novo.getRg();
+				if(validarRG(a)) {
+					alterarDados(novo);
+					limparCampos();
+				}
 			}
 		}
+	}
+
+	public boolean validarRG(String A) {
+		int a = A.charAt(0) - '0';
+		int b = A.charAt(1) - '0';
+		int c = A.charAt(2) - '0';
+		int d = A.charAt(3) - '0';
+		int e = A.charAt(4) - '0';
+		int f = A.charAt(5) - '0';
+		int g = A.charAt(6) - '0';
+		int h = A.charAt(7) - '0';
+		int i = A.charAt(8) - '0';
+		int result = (2*a) + (3*b) + (4*c) + (5*d) + (6*e) + (7*f) + (8*g) + (9*h) ;
+		int abc = 11 -(result % 11);
+		if(abc == i) {
+			return true;
+		}else {
+			JOptionPane.showMessageDialog(null, "RG não valido");
+			return false;
+		}
+
 	}
 
 
