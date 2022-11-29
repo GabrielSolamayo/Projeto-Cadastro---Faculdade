@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.event.*;
 import javax.swing.*;
@@ -17,16 +18,16 @@ public class Excluir_RA extends JFrame implements ActionListener{
 
 	public Excluir_RA() {
 		setTitle("Excluir Aluno");
-		setSize(500 , 350);
+		setSize(450 , 230);
 		getContentPane().setLayout(null);
 
 		texto = criarRotulo("Digite o RA do Aluno para excluir.", 10, 5, 500, 35);
 
-		ra = criarRotulo("RA: ", 10, 50, 100, 35);
-		txtRA = criarTexto(110, 50, 300, 35);
+		ra = criarRotulo("RA: ", 10, 60, 100, 35);
+		txtRA = criarTexto(110, 60, 300, 35);
 
 		//Criando Botões;
-		btnExcluir = criarBotao("Excluir", 155, 230, 130, 30, 'E');
+		btnExcluir = criarBotao("Excluir", 155, 130, 130, 30, 'E');
 		btnExcluir.addActionListener(this);
 
 		setLocationRelativeTo(null);
@@ -41,34 +42,47 @@ public class Excluir_RA extends JFrame implements ActionListener{
 			int resp=JOptionPane.showConfirmDialog(null, "Confirma a exclusao?");
 			if(resp == 0) {
 				Aluno novo = new Aluno(txtRA.getText());
-				try {
+				int a = Integer.parseInt(novo.getRa());
+				if (verificarRA(a)) {
 					excluirDados(novo);
-				} catch (Exception e1) {
-					e1.printStackTrace();
+					limparCampos();
 				}
-				limparCampos();
 			}
 		}
 	}
 
+	public boolean verificarRA(int ra) {
+		try {
+			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root", "");
+			PreparedStatement ps = cn.prepareStatement("Select ra from alunos where ra = " + ra);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				return true;
+			}else {
+				JOptionPane.showMessageDialog(null, "RA nao encontrado");
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 
 	//Gravando os dados no BD "projeto_integrador";
-	private void excluirDados(Aluno novo) throws Exception{
-		Connection cn = null;
-		PreparedStatement pstm = null;
+	public void excluirDados(Aluno novo) {
 		try {
-			cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root","");
-			pstm = cn.prepareStatement("DELETE FROM alunos WHERE ra = ?");
-			pstm.setString(1, novo.getRa());
+			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador","root", "");
+
+			PreparedStatement ps = cn.prepareStatement("DELETE FROM alunos WHERE ra = ?");
+			ps.setString(1, novo.getRa());
+			ps.executeUpdate();
 			JOptionPane.showMessageDialog(null, "Aluno excluido com sucesso.");
-			pstm.execute();
-		}catch(SQLException e) {
-			cn.rollback();
-			JOptionPane.showInputDialog("Falha ao acessar");
-			throw new Exception("Falha ao acessar a base de dados.", e);
-		} finally {
-			pstm.close();
+			ps.close();
 			cn.close();
+			System.out.println("Conexao encerrada.");            
+		} catch (SQLException e) {
+			System.out.println("Falha ao tentar excluir o Aluno.");
+			e.printStackTrace();
 		}
 	}
 	//Metodo para cirar Rotulos;
