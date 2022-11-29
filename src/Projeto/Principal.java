@@ -105,8 +105,10 @@ public class Principal extends JFrame implements ActionListener{
 		}else if (e.getSource() == pRA) {
 			new Excluir_RA();
 		}else if(e.getSource() == professores) {
+			System.out.println("\nLista de Professores: \n");
 			consultarProfessores();
 		}else if (e.getSource() == alunos) {
+			System.out.println("\nLista de Alunos: \n");
 			consultarAlunos();
 		}else if (e.getSource() == sair) {
 			int resp = JOptionPane.showConfirmDialog(null,"Confirma o encerramento?");
