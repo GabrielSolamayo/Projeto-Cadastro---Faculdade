@@ -13,3 +13,15 @@ create table alunos (
     nome_aluno varchar(50) not null,
     rg_aluno int(9) null
 );
+
+select * from professores;
+insert into professores (nome_prof , rg_prof)
+	values('Thiago Almeida', 458217864),
+		  ('Vinicius Santos', 425448022),
+          ('Leticia Amorin', 126438389);
+          
+select * from alunos;
+insert into alunos (nome_aluno, rg_aluno)
+	values('Bernando Guimaraes', 107641471),
+		  ('Vitoria da Silva', 121355755),
+          ('Ana Carolina', 392113375);
