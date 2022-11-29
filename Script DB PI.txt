@@ -25,3 +25,6 @@ insert into alunos (nome_aluno, rg_aluno)
 	values('Bernando Guimaraes', 107641471),
 		  ('Vitoria da Silva', 121355755),
           ('Ana Carolina', 392113375);
+
+
+https://www.4devs.com.br/gerador_de_rg
