@@ -41,6 +41,9 @@ public class Professor {
 		this.rgf = rgf;
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Nome = " + nome + "| RG = " + rg;
+	}
 	
 }

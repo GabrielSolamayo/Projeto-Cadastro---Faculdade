@@ -7,7 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.sql.Statement;
 import javax.swing.event.*;
 import javax.swing.*;
 
@@ -15,8 +15,8 @@ import javax.swing.*;
 public class Principal extends JFrame implements ActionListener{
 	ImageIcon imagem;
 	JMenuBar menu;
-	JMenu cadastro, alteracao, exclusao, encerrar;
-	JMenuItem professor, prof, aluno, alu, pRGF, pRA, sair;
+	JMenu cadastro, alteracao, exclusao, encerrar, imprimir;
+	JMenuItem professor, prof, aluno, alu, professores, alunos, pRGF, pRA, sair;
 
 	public static void main(String[] args) {
 		new Principal();
@@ -33,10 +33,12 @@ public class Principal extends JFrame implements ActionListener{
 		cadastro = new JMenu("Cadastro");
 		alteracao = new JMenu("Alteracão");
 		exclusao = new JMenu("Exclusão");
+		imprimir = new JMenu("Imprimir");
 		encerrar = new JMenu("Encerrar");
 		menu.add(cadastro);
 		menu.add(alteracao);
 		menu.add(exclusao);
+		menu.add(imprimir);
 		menu.add(encerrar);
 
 		//Criando os items de Cadastro;
@@ -63,6 +65,16 @@ public class Principal extends JFrame implements ActionListener{
 		exclusao.add(pRGF);
 		exclusao.add(pRA);
 
+		//Criando os itens de Imprimir;
+		professores = new JMenuItem("Professores");
+		professores.addActionListener(this);
+		alunos = new JMenuItem("Alunos");
+		alunos.addActionListener(this);
+		imprimir.add(professores);
+		imprimir.add(alunos);
+
+
+
 		//Criando os itens de Encerrar;
 		sair = new JMenuItem("Sair");
 		sair.addActionListener(this);
@@ -85,13 +97,17 @@ public class Principal extends JFrame implements ActionListener{
 		}else if(e.getSource() == professor) {
 			new Cadastro_Prof();
 		}else if (e.getSource() == prof) {
-				new Alterar_Prof();					
+			new Alterar_Prof();					
 		}else if (e.getSource() == alu) {
-				new Alterar_Aluno();	
+			new Alterar_Aluno();	
 		}else if (e.getSource() == pRGF) {
 			new Excluir_RGF();
 		}else if (e.getSource() == pRA) {
 			new Excluir_RA();
+		}else if(e.getSource() == professores) {
+			consultarProfessores();
+		}else if (e.getSource() == alunos) {
+			consultarAlunos();
 		}else if (e.getSource() == sair) {
 			int resp = JOptionPane.showConfirmDialog(null,"Confirma o encerramento?");
 			if(resp==0)
@@ -99,8 +115,48 @@ public class Principal extends JFrame implements ActionListener{
 		}
 	}
 
-	
-	
+	public void consultarAlunos() {
+		try {
+			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador", "root", "");
+			Statement st = cn.createStatement();
+			ResultSet rs = st.executeQuery("SELECT nome_aluno, rg_aluno FROM alunos");
+			while(rs.next()) {
+				Aluno novo = new Aluno();
+				novo.setNome(rs.getString("nome_aluno"));
+				novo.setRg(rs.getString("rg_aluno"));
+				System.out.println(novo);
+			}
+			rs.close();
+			st.close();
+			cn.close();
+		}catch(SQLException e) {
+			System.out.println("Falha ao realizar a operação");
+			e.getMessage();
+		}
+	}
+
+	public void consultarProfessores() {
+		try {
+			Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/projeto_integrador", "root", "");
+			Statement st = cn.createStatement();
+			ResultSet rs = st.executeQuery("SELECT nome_prof, rg_prof FROM professores");
+			while(rs.next()) {
+				Aluno novo = new Aluno();
+				novo.setNome(rs.getString("nome_prof"));
+				novo.setRg(rs.getString("rg_prof"));
+				System.out.println(novo);
+			}
+			rs.close();
+			st.close();
+			cn.close();
+		}catch(SQLException e) {
+			System.out.println("Falha ao realizar a operação");
+			e.getMessage();
+		}
+	}
+
+
+
 
 
 }

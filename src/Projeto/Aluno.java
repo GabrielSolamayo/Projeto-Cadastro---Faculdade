@@ -19,6 +19,10 @@ public class Aluno {
 		this.ra = ra;
 	}
 	
+	public Aluno () {
+		
+	}
+	
 	public String getNome() {
 		return nome;
 	}
@@ -46,6 +50,11 @@ public class Aluno {
 	
 	public void setRg(String rg) {
 		this.rg = rg;
+	}
+	
+	@Override
+	public String toString() {
+		return "Nome = " + nome + "| RG = " + rg;
 	}
 
 	
