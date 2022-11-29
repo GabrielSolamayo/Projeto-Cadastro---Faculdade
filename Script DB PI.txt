@@ -1,13 +1,15 @@
 create database projeto_integrador;
  
+drop table professores;
 create table professores (
-    rgf int not null primary key,
+    rgf int not null primary key auto_increment,
     nome_prof varchar(50) not null,
-    rg_prof int(50) null
+    rg_prof int(9) null
 );
 
+drop table alunos;
 create table alunos (
-    ra int not null primary key,
+    ra int not null primary key auto_increment,
     nome_aluno varchar(50) not null,
-    rg_aluno int(50) null
+    rg_aluno int(9) null
 );
